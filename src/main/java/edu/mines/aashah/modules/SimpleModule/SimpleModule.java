@@ -6,20 +6,20 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PImage;
-import edu.mines.acmX.exhibit.input_services.events.HandReceiver;
 import edu.mines.acmX.exhibit.input_services.hardware.BadFunctionalityRequestException;
-import edu.mines.acmX.exhibit.input_services.hardware.DeviceConnectionException;
 import edu.mines.acmX.exhibit.input_services.hardware.HardwareManager;
 import edu.mines.acmX.exhibit.input_services.hardware.HardwareManagerManifestException;
+import edu.mines.acmX.exhibit.input_services.hardware.UnknownDriverRequest;
 import edu.mines.acmX.exhibit.input_services.hardware.devicedata.HandTrackerInterface;
 import edu.mines.acmX.exhibit.input_services.hardware.devicedata.RGBImageInterface;
+import edu.mines.acmX.exhibit.input_services.hardware.drivers.InvalidConfigurationFileException;
 import edu.mines.acmX.exhibit.module_management.modules.ProcessingModule;
 import edu.mines.acmX.exhibit.stdlib.graphics.Coordinate3D;
 import edu.mines.acmX.exhibit.stdlib.graphics.HandPosition;
 import edu.mines.acmX.exhibit.stdlib.input_processing.imaging.RGBImageUtilities;
+import edu.mines.acmX.exhibit.stdlib.input_processing.receivers.HandReceiver;
 
 /**
  * A simple module example to demonstrate communicating with the
@@ -59,11 +59,7 @@ public class SimpleModule extends ProcessingModule {
 		} catch (HardwareManagerManifestException e) {
 			System.out.println("Error in the HardwareManager manifest file.");
 			e.printStackTrace();
-		} catch (DeviceConnectionException e) {
-			System.out.println( "No devices are currently connected to " + 
-								"retrieve data from.");
-			e.printStackTrace();
-		}
+		} 
 		
 		/*
 		 * To actually retrieve the driver, such that we can receive
@@ -79,6 +75,12 @@ public class SimpleModule extends ProcessingModule {
 			handDriver = (HandTrackerInterface) hm.getInitialDriver("handtracking");
 		} catch (BadFunctionalityRequestException e) {
 			System.out.println("Functionality unknown (may not be supported)");
+			e.printStackTrace();
+		} catch (UnknownDriverRequest e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidConfigurationFileException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -183,11 +185,11 @@ public class SimpleModule extends ProcessingModule {
 		}
 		
 		public void handCreated(HandPosition handPos) {
-			handPositions.put(handPos.id, handPos.position);
+			handPositions.put(handPos.getId(), handPos.getPosition());
 		}
 		
 		public void handUpdated(HandPosition handPos) {
-			handPositions.put(handPos.id, handPos.position);
+			handPositions.put(handPos.getId(), handPos.getPosition());
 		}
 		
 		public void handDestroyed(int id) {

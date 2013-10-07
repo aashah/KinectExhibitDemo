@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest
+    package="edu.mines.aashah.modules.SimpleModule"
+    class="SimpleModule"
+    icon="icon.jpg"
+    title="Simple Module"
+    author="Aakash Shah"
+    version="0.0.1" >
+    <uses-sdk
+        minSdkVersion="0"
+        targetSdkVersion="0" />
+        
+    <inputs>
+      <input input-type="handtracking" />
+      <input input-type="rgbimage" />
+    </inputs>
+    <requires-module>
+        
+    </requires-module>
+</manifest>
+
